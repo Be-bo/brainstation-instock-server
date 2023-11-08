@@ -38,6 +38,25 @@ router.get('/inventories/:id', async(req, res) => {
 });
 
 
+// MARK: Insert Inventory Item
+router.post('/inventories', async (req, res) =>{
+    try{
+        const itemBody = req.body;
+        const {error, value: cleanedData} = helpers.inventorySchema.validate(itemBody['inventory-item']);
+        if(error){
+            console.log('Failed to validate inventory data: ', error);
+            res.status(500).json({error});
+        }else{
+            const newInventoryItemId = await knex('inventories').insert(cleanedData);
+            console.log('Successfully added item with id ', newInventoryItemId);
+            res.json(newInventoryItemId);
+        }
+    }catch(error){
+        res.status(500).json({error});
+    }
+});
+
+
 // MARK: Update Inventory Item
 router.put('/inventories/:id', async (req, res) => {
     const itemId = req.params.id;
@@ -69,6 +88,7 @@ router.delete('/inventories/:id', async(req, res) => {
 
     try{
         await knex('inventories').where({id: itemId}).del();
+        console('Successfully deleted inventory item with id ', itemId);
         res.sendStatus(204);
     
     }catch(error){
