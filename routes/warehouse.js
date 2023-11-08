@@ -101,6 +101,26 @@ router.put("/warehouses/:id", async (req, res) => {
         console.log('Failed to update warehouse item ', itemId);
         res.status(500).json({error});
     }
-
 });
+
+
+router.get('/warehouses/:id/inventories', async(req, res) => {
+    const warehouseId = req.params.id;
+
+    try{
+        const selectedWarehouseData = await knex('warehouses').select('*').where({id: warehouseId});
+        if(selectedWarehouseData.length == 0){
+            console.log('Failed to get inventory for warehouse ', warehouseId, ', data does not exist.');
+            res.status(404);
+        }else{
+            const inventoryData = await knex('inventories').select('*').where({warehouse_id: warehouseId});
+            console.log('Found inventories for ware house ', warehouseId, ': ', inventoryData);
+            res.status(200).json(inventoryData);
+        }
+    }catch(error){
+        console.log('Failed to get inventories for warehouse ', itemId, ' error: ', error);
+        res.status(500).json({error});
+    }
+});
+
 module.exports = router;
