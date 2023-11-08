@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 
-router.get('/warehouses', async(req, res) => {
+router.get('/inventories', async(req, res) => {
     // TODO: Robert
 });
 
