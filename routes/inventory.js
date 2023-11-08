@@ -62,4 +62,19 @@ router.put('/inventories/:id', async (req, res) => {
     }
 });
 
+
+// MARK: Delete Inventory Item
+router.delete('/inventories/:id', async(req, res) => {
+    const itemId = req.params.id;
+
+    try{
+        await knex('inventories').where({id: itemId}).del();
+        res.sendStatus(204);
+    
+    }catch(error){
+        console.log('Failed to delete inventory item: ', error);
+        res.status(500).json({error});
+    }
+});
+
 module.exports = router;
