@@ -8,7 +8,6 @@ const helpers = require('../helpers.js');
 
 // TODO: Proper REST error responses
 
-
 // MARK: Get Inventory
 router.get('/inventories', async(req, res) => {
 
@@ -20,6 +19,21 @@ router.get('/inventories', async(req, res) => {
     }catch(error){
         console.log('Cannot return a list of all inventories: ', error);
         res.status(500).json({ error });
+    }
+});
+
+
+// MARK: Get Inventory Item
+router.get('/inventories/:id', async(req, res) => {
+    const itemId = req.params.id;
+
+    try{
+        const inventoryItem = await knex.select('*').from('inventories').where({id: itemId});
+        console.log(inventoryItem);
+    
+    }catch(error){
+        console.log('Cannot return inventory item: ', error);
+        res.status(500).json({error});
     }
 });
 
