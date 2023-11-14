@@ -8,10 +8,9 @@ router.get("/warehouses", async (req, res) => {
     try {
         const AllWarehousesData = await knex.select("*").from("warehouses");
         console.log("responded with a list of all warehouses successfully");
-        res.json(AllWarehousesData);
         res.status(200).json(AllWarehousesData);
     } catch (error) {
-        console.log("Cannot return a list of all inventories: ", error);
+        console.log("Cannot return a list of all warehouses: ", error);
         res.status(500).json({ error });
     }
 });
